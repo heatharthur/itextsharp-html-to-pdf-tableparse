@@ -5,6 +5,7 @@
             //Create the quote PDF with its dimensions
             Document pdfDocument = new Document();
 
+            //Landscape view    
             pdfDocument.SetPageSize(iTextSharp.text.PageSize.A4.Rotate());
 
             //Create the binary stream that will used by the quote's HTML code
@@ -21,6 +22,7 @@
 
                 pdfDocument.Open();
 
+                //Parse in the tables
                 List<IElement> htmlTablelist = HTMLWorker.ParseToList(new StringReader(HTMLCode), null);
 
                 int tableCount = 1;
@@ -28,6 +30,7 @@
                 //Loop through each table in the html code
                 foreach (IElement htmlTable in htmlTablelist)
                 {
+                    //Convert the IElements into an editable pdfPTable    
                     PdfPTable table = (PdfPTable)htmlTable;
 
                     //Using a count to find each table
