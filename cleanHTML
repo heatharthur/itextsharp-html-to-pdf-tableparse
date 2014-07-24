@@ -6,10 +6,10 @@
 
             xhtmlString = xhtmlString.Replace("style=\"text-decoration:underline\"", string.Empty);
 
+            //Table widths cannot be parsed, need to remove them all    
             xhtmlString = xhtmlString.Replace("width=\"1000\"", string.Empty);
 
-            xhtmlString = xhtmlString.Replace("width=\"150px\"", string.Empty);
-
+            //Removing all styles    
             while (true)
             {
                 int position = xhtmlString.IndexOf("style");
@@ -27,41 +27,21 @@
                     break;
             }
 
+            //Removing button    
             int pos1 = xhtmlString.IndexOf("<button");
             int pos2 = xhtmlString.IndexOf("</button>") + 9;
             int len = pos2 - pos1;
 
             xhtmlString = xhtmlString.Remove(pos1, len);
 
-            pos1 = xhtmlString.IndexOf("<button");
-            pos2 = xhtmlString.IndexOf("</button>") + 9;
-            len = pos2 - pos1;
-
-            xhtmlString = xhtmlString.Remove(pos1, len);
-
-            pos1 = xhtmlString.IndexOf("<button");
-            pos2 = xhtmlString.IndexOf("</button>") + 9;
-            len = pos2 - pos1;
-
-            xhtmlString = xhtmlString.Remove(pos1, len);
-
+            //Removing Input    
             pos1 = xhtmlString.IndexOf("<input");
             pos2 = xhtmlString.IndexOf("/>", pos1) + 2;
             len = pos2 - pos1;
 
             xhtmlString = xhtmlString.Remove(pos1, len);
-
-            pos1 = xhtmlString.IndexOf("<input");
-            pos2 = xhtmlString.IndexOf("/>", pos1) + 2;
-            len = pos2 - pos1;
-
-            xhtmlString = xhtmlString.Remove(pos1, len);
-
-            pos1 = xhtmlString.IndexOf("<input");
-            pos2 = xhtmlString.IndexOf("/>", pos1) + 2;
-            len = pos2 - pos1;
-
-            xhtmlString = xhtmlString.Remove(pos1, len);
+            
+            //There may be more in your html string that needs removed for parsing
 
             return xhtmlString;
         }
