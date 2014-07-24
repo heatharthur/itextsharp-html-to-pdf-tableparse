@@ -1,0 +1,78 @@
+        protected void ConvertHTMLToPDF(string HTMLCode)
+        {
+            HTMLCode = cleanHTML(HTMLCode);
+
+            //Create the quote PDF with its dimensions
+            Document pdfDocument = new Document();
+
+            pdfDocument.SetPageSize(iTextSharp.text.PageSize.A4.Rotate());
+
+            //Create the binary stream that will used by the quote's HTML code
+            System.IO.MemoryStream msPDFQuote = new System.IO.MemoryStream();
+
+            try
+            {
+                //Create the "write" object
+                PdfWriter writer = PdfWriter.GetInstance(pdfDocument, msPDFQuote);
+
+                //Add some META information
+                pdfDocument.AddAuthor("DocumentName");
+                pdfDocument.AddCreationDate();
+
+                pdfDocument.Open();
+
+                List<IElement> htmlTablelist = HTMLWorker.ParseToList(new StringReader(HTMLCode), null);
+
+                int tableCount = 1;
+
+                //Loop through each table in the html code
+                foreach (IElement htmlTable in htmlTablelist)
+                {
+                    PdfPTable table = (PdfPTable)htmlTable;
+
+                    //Using a count to find each table
+                    if (tableCount == 1)
+                    {
+                    `   //looping through each row in the table
+                        foreach (var row in table.Rows)
+                        {
+                            int cellCount = 1;
+
+                            //looping through each cell in a row
+                            foreach (var cell in row.GetCells())
+                            {
+                                //Manipulating all cells
+                                cell.BorderWidthBottom = 1.0f;
+                                cell.BorderColorBottom = BaseColor.BLACK;
+
+                                //Using count to manipulate certain cells
+                                if (cellCount == 5)
+                                {
+                                    cell.Colspan = 2;
+                                }
+                                
+                                cellCount++;
+                            }
+                        }
+                    }
+
+                    pdfDocument.Add(htmlTable);
+
+                    tableCount++;
+                }
+
+                pdfDocument.Close();
+
+                //Build the HttpContext objects for the HTTP request
+                Response.Clear();
+                Response.AddHeader("content-disposition", "attachment;filename=");
+                Response.ContentType = "application/pdf";
+                Response.BinaryWrite(msPDFQuote.ToArray());
+                Response.End();
+            }
+            catch
+            {
+                //If something goes wrong, redirect to the error page
+                //Response.Redirect("../error.aspx");
+            }
+        }
