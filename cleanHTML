@@ -4,8 +4,6 @@
 
             xhtmlString = xhtmlString.Replace("<BR>", "<br />").Replace("<br>", "<br />");
 
-            xhtmlString = xhtmlString.Replace("style=\"text-decoration:underline\"", string.Empty);
-
             //Table widths cannot be parsed, need to remove them all    
             xhtmlString = xhtmlString.Replace("width=\"1000\"", string.Empty);
 
