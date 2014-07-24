@@ -4,42 +4,78 @@
 
             xhtmlString = xhtmlString.Replace("<BR>", "<br />").Replace("<br>", "<br />");
 
-            //Table widths cannot be parsed, need to remove them all    
-            xhtmlString = xhtmlString.Replace("width=\"1000\"", string.Empty);
+            int pos1 = 0;
+            int pos2 = 0;
+            int len = 0;
 
-            //Removing all styles    
+            //Remove all widths
             while (true)
             {
-                int position = xhtmlString.IndexOf("style");
+                pos1 = xhtmlString.IndexOf("width=");
 
-                if (position > -1)
+                if (pos1 > -1)
                 {
-                    int position2 = xhtmlString.IndexOf("\"", position + 9) + 1;
+                    pos2 = xhtmlString.IndexOf("\"", pos1 + 7) + 1;
+                    len = pos2 - pos1;
 
-                    int theLength = position2 - position;
-
-                    xhtmlString = xhtmlString.Remove(position, theLength);
+                    xhtmlString = xhtmlString.Remove(pos1, len);
                 }
 
                 else
                     break;
             }
 
-            //Removing button    
-            int pos1 = xhtmlString.IndexOf("<button");
-            int pos2 = xhtmlString.IndexOf("</button>") + 9;
-            int len = pos2 - pos1;
+            //Remove all styles
+            while (true)
+            {
+                pos1 = xhtmlString.IndexOf("style");
 
-            xhtmlString = xhtmlString.Remove(pos1, len);
+                if (pos1 > -1)
+                {
+                    pos2 = xhtmlString.IndexOf("\"", pos1 + 9) + 1;
 
-            //Removing Input    
-            pos1 = xhtmlString.IndexOf("<input");
-            pos2 = xhtmlString.IndexOf("/>", pos1) + 2;
-            len = pos2 - pos1;
+                    len = pos2 - pos1;
 
-            xhtmlString = xhtmlString.Remove(pos1, len);
-            
-            //There may be more in your html string that needs removed for parsing
+                    xhtmlString = xhtmlString.Remove(pos1, len);
+                }
+
+                else
+                    break;
+            }
+
+            //Remove all buttons
+            while (true)
+            {
+                pos1 = xhtmlString.IndexOf("<button");
+
+                if (pos1 > -1)
+                {
+                    pos2 = xhtmlString.IndexOf("</button>", pos1) + 9;
+                    len = pos2 - pos1;
+
+                    xhtmlString = xhtmlString.Remove(pos1, len);
+                }
+
+                else
+                    break;
+            }
+
+            //Remove all inputs
+            while (true)
+            {
+                pos1 = xhtmlString.IndexOf("<input");
+
+                if (pos1 > -1)
+                {
+                    pos2 = xhtmlString.IndexOf("/>", pos1) + 2;
+                    len = pos2 - pos1;
+
+                    xhtmlString = xhtmlString.Remove(pos1, len);
+                }
+
+                else
+                    break;
+            }
 
             return xhtmlString;
         }
