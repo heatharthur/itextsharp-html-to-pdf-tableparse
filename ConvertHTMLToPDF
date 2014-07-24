@@ -8,13 +8,13 @@
             //Landscape view    
             pdfDocument.SetPageSize(iTextSharp.text.PageSize.A4.Rotate());
 
-            //Create the binary stream that will used by the quote's HTML code
-            System.IO.MemoryStream msPDFQuote = new System.IO.MemoryStream();
+            //Create the binary stream that will used by the HTML code
+            System.IO.MemoryStream msPDF = new System.IO.MemoryStream();
 
             try
             {
                 //Create the "write" object
-                PdfWriter writer = PdfWriter.GetInstance(pdfDocument, msPDFQuote);
+                PdfWriter writer = PdfWriter.GetInstance(pdfDocument, msPDF);
 
                 //Add some META information
                 pdfDocument.AddAuthor("DocumentName");
